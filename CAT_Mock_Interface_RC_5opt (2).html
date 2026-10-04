@@ -1,0 +1,304 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CAT Mock</title>
+<style>
+*{box-sizing:border-box}html,body{height:100%;margin:0}body{font:14px Arial,sans-serif;color:#222}
+#r{display:flex;flex-direction:column;height:100%}
+.hd{background:#2b6cb0;color:#fff;padding:8px 16px;display:flex;justify-content:space-between;align-items:center;font-size:16px}
+.cand{display:flex;align-items:center;gap:8px;font-size:13px}.ph{width:30px;height:30px;background:#cfd8e3;border-radius:3px;display:inline-block}
+.sb{background:#e9eef5;padding:6px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #bcc7d6}
+.tab{padding:6px 18px;background:#fff;border:1px solid #9fb0c7;color:#555}.tab.on{background:#2b6cb0;color:#fff;border-color:#2b6cb0}
+.tm{margin-left:auto;font-weight:bold}.tm b{background:#222;color:#fff;padding:3px 8px;border-radius:3px;margin-left:6px}
+.main{flex:1;display:flex;min-height:0}.lc{flex:1;display:flex;flex-direction:column;min-width:0}.sp{flex:1;display:flex;min-height:0}
+#lp{width:45%;overflow:auto;padding:12px;border-right:1px solid #bbb;display:none}#qp{flex:1;overflow:auto}
+.qh{background:#f1f1f1;padding:8px 12px;font-weight:bold;display:flex;justify-content:space-between;border-bottom:1px solid #ddd}.qh span{font-weight:normal;font-size:12px}
+.qb{padding:12px}.pt{white-space:pre-wrap;line-height:1.5}.op{display:block;padding:6px 4px;cursor:pointer}.qb img{display:block;max-width:100%;max-height:460px;width:auto;height:auto;object-fit:contain;margin:12px auto;background:#fff}.solbox{padding:12px}.solbox h2{margin:0 0 12px}.solsec{margin:18px 0}.solq{margin:8px 0;border:1px solid #c8d2df;border-radius:4px;background:#fff}.solq summary{cursor:pointer;padding:10px;font-weight:bold;background:#f1f5f9}.sole{padding:12px;line-height:1.55;white-space:pre-wrap}.solmeta{font-size:12px;color:#555;margin-bottom:8px}.backbtn{margin-bottom:12px}
+.kp{width:200px}.kp button{width:60px;height:34px;margin:2px}.kp .w{width:98px}
+.ft{padding:8px 12px;border-top:1px solid #bbb;display:flex;gap:8px;background:#f7f7f7}.ft .r{margin-left:auto}
+button{padding:7px 14px;border:1px solid #9fb0c7;background:#fff;cursor:pointer;font-size:13px}.bl{background:#2b6cb0;color:#fff;border-color:#2b6cb0}
+.pal{width:270px;background:#dbe9f6;padding:10px;overflow:auto;border-left:1px solid #9fb0c7}.pal h4{margin:8px 0;background:#2b6cb0;color:#fff;padding:5px 8px}
+.lg{font-size:12px;line-height:2.2}
+.p{display:inline-block;width:34px;height:30px;line-height:30px;text-align:center;margin:3px;color:#fff;cursor:pointer;font-weight:bold;position:relative}
+.lg .p{width:26px;height:24px;line-height:24px;margin:0 6px 0 0;font-size:11px;cursor:default}
+.nv{background:#e5e5e5;color:#333;border:1px solid #bbb;border-radius:4px}.na{background:#e0412f;border-radius:4px 4px 50% 50%}
+.a{background:#4caf50;border-radius:50% 50% 4px 4px}.m{background:#7b4fa8;border-radius:50%}
+.am{background:#7b4fa8;border-radius:50%}.am:after{content:'✓';position:absolute;right:-3px;bottom:-5px;color:#2e9e3e;font-size:13px}
+.cu{outline:2px solid #000}
+.pg{flex:1;overflow:auto;padding:16px 24px}table{border-collapse:collapse;margin:8px 0;font-size:13px}th,td{border:1px solid #bbb;padding:4px 10px;text-align:left}
+textarea,.pg input.f{width:100%}small{color:#666}
+
+.dashhead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}.card,.dpanel{border:1px solid #c8d2df;background:#fff;border-radius:8px;padding:14px}.card small,.card span{display:block;color:#667085}.card strong{font-size:28px;display:inline-block;margin:5px 4px 2px 0}.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}.dpanel h3{margin:0 0 12px}.barrow{margin:12px 0}.barlabel{display:flex;justify-content:space-between;gap:8px}.bar{height:12px;background:#e7edf3;border-radius:8px;overflow:hidden;margin:5px 0}.bar i{display:block;height:100%;background:#2b6cb0}.barrow small{color:#667085}.minirow{display:grid;grid-template-columns:70px 60px 1fr 90px;gap:8px;padding:9px 0;border-bottom:1px solid #e6e9ee}.ins{padding-left:20px;margin-bottom:0}.ins li{margin:8px 0}.trend{height:190px;display:flex;align-items:end;gap:18px;padding:12px 8px 0;border-bottom:1px solid #bbb}.trendcol{height:180px;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:4px}.trendcol i{display:block;width:34px;background:#2b6cb0;border-radius:4px 4px 0 0}.trendcol span{font-weight:700}.trendcol small{color:#667085}@media(max-width:800px){.kpis{grid-template-columns:1fr 1fr}.dgrid{grid-template-columns:1fr}.dashhead{align-items:flex-start;flex-direction:column}}@media(max-width:520px){.kpis{grid-template-columns:1fr}.minirow{grid-template-columns:55px 50px 1fr 70px;font-size:12px}}
+</style></head><body><div id="r"></div>
+<script>
+const $=s=>document.querySelector(s),root=$('#r'),SECS=['VARC','DILR','QA'];
+const LS=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}};
+const SV=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));return 1}catch(e){alert('Storage full/blocked — export your questions as JSON.');return 0}};
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=s=>{s=Math.max(0,Math.round(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+let Q=LS('catq',[]),AS=LS('catassets',{}),cfg=LS('catcfg',{timer:true,mins:{VARC:40,DILR:40,QA:40}}),T=null,ed=null,IMG='',ARCH=LS('catarch',{});
+const STN={nv:'Not visited',na:'Not answered',a:'Answered',m:'Marked for review',am:'Answered & marked'};
+const stat=s=>s.a!==null&&s.a!==''?(s.m?'am':'a'):s.m?'m':s.v?'na':'nv';
+const nid=()=>Date.now()+Math.random().toString(36).slice(2,6);
+
+function route(){if(T)return;location.hash==='#admin'?admin():home()}
+addEventListener('hashchange',route);
+addEventListener('keydown',e=>{if(e.ctrlKey&&e.shiftKey&&e.key.toLowerCase()=='a'&&!T){e.preventDefault();location.hash=location.hash=='#admin'?'':'#admin'}});
+addEventListener('beforeunload',e=>{if(T){e.preventDefault();e.returnValue=''}});
+
+/* ---------- HOME ---------- */
+const ri=s=>AS[s]||s||'';
+function resetBank(){
+ if(!confirm('This will permanently remove ALL questions currently stored in this browser, including questions you have already attempted (solutions for past attempts in History will stop opening). Your latest attempt will also be cleared; the History list itself stays. Continue?'))return;
+ Q=[];
+ localStorage.removeItem('catq');
+ localStorage.removeItem('catassets');
+ localStorage.removeItem('cata');localStorage.removeItem('cataq');localStorage.removeItem('catarch');ARCH={};
+ ed=null; IMG='';
+ if(T){clearInterval(T.iv);T=null;}
+ location.hash='';
+ alert('Question bank reset. All existing questions have been removed. You can now import a new mock.');
+ home();
+}
+
+function cuUpd(){
+ const cs=$('#cs').value,r=Q.filter(q=>cs=='ALL'||q.sec==cs).length,c=$('#cn');
+ $('#cr').textContent=r;c.max=r;if(+c.value>r)c.value=r;if(!+c.value&&r)c.value=Math.min(10,r);
+ $('#cm').value=Math.max(1,Math.round((+c.value||0)*40/24));
+}
+function home(){
+ const a=LS('cata',null),n=s=>Q.filter(q=>q.sec==s).length,na=Object.keys(ARCH).length,hn=LS('cathistory',[]).length;
+ root.innerHTML=`<div class=hd><b>Common Admission Test — Mock</b><span class=cand>Candidate<span class=ph></span></span></div><div class=pg>
+ <h3>Test setup</h3>
+ <p><b>${Q.length}</b> unattempted questions in the bank · <b>${na}</b> already attempted (never shown again) · <a href="#" onclick="showHistory();return false">Attempt history (${hn})</a></p>
+ <table><tr><th>Section<th>Remaining<th>Minutes (Full / Sectional)</tr>${SECS.map(s=>`<tr><td>${s}<td>${n(s)}<td><input type=number min=1 id=m${s} value=${cfg.mins[s]} style="width:60px"></tr>`).join('')}</table>
+ <p>Mode: <select id=mode onchange="$('#cu').style.display=this.value=='custom'?'':'none';cuUpd()"><option value=full>Full mock (VARC → DILR → QA)</option>${SECS.map(s=>`<option value=${s}>Sectional: ${s}</option>`).join('')}<option value=custom>Custom practice — I choose how many questions</option></select>
+ &nbsp; <label><input type=checkbox id=tmr ${cfg.timer?'checked':''}> Timer on (off = count-up clock)</label></p>
+ <div id=cu style="display:none;padding:8px 12px;border:1px solid #bbb;margin:8px 0">
+  Section <select id=cs onchange=cuUpd()><option value=ALL>All sections</option>${SECS.map(s=>`<option>${s}</option>`).join('')}</select>
+  &nbsp;Number of questions <input type=number min=1 id=cn value=${Math.min(10,Q.length)} oninput=cuUpd() style="width:70px"> <small>(<span id=cr>${Q.length}</span> unattempted available)</small>
+  &nbsp;Order <select id=co><option value=seq>Bank order</option><option value=rnd>Shuffled (passage sets stay together)</option></select>
+  &nbsp;Total time <input type=number min=1 id=cm style="width:60px"> min <small>(auto: ~1.7 min per question)</small>
+ </div>
+ <button class=bl onclick=start()>Start test</button> <button onclick=resetBank() style="margin-left:8px">Reset / Remove All Questions</button> <small>&nbsp;Admin: Ctrl+Shift+A (or add #admin to the URL)</small>
+ <h3>Latest attempt</h3>${a?summ(a)+`<p><button class=bl onclick=dashboard()>Open Performance Dashboard</button> <button onclick=showHistory()>All attempts</button></p>`:'<p>No attempt yet.</p>'}</div>`;
+}
+const fq=id=>Q.find(q=>q.id===id)||ARCH[id]||LS('cataq',[]).find(q=>q.id===id);
+const modeName=m=>m=='full'?'Full mock':m=='custom'?'Custom practice':'Sectional '+m;
+const fp=q=>(q.q||'')+'¦'+(q.opts||[]).join('¦')+'¦'+(q.img||'')+'¦'+(q.passage||'').slice(0,80);
+function pickQs(pool,n,rnd){
+ const g=[],ix={};
+ pool.forEach(q=>{if(q.passage){const k=q.sec+'|'+q.passage;if(ix[k]==null){ix[k]=g.length;g.push([])}g[ix[k]].push(q)}else g.push([q])});
+ if(rnd)for(let i=g.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[g[i],g[j]]=[g[j],g[i]]}
+ const out=[];for(const x of g){if(out.length>=n)break;out.push(...x.slice(0,n-out.length))}return out;
+}
+function judge(x){
+ const q=fq(x.id);if(!q||q.key==null||q.key==='')return null;
+ const a=x.raw,ans=q.type=='MCQ'?'ABCDE'[q.key]:q.key,pos=q.pos;
+ if(a==null||a==='')return{r:'Unattempted',m:0,ans,pos};
+ const ok=q.type=='MCQ'?a===q.key:(String(a).trim()==String(q.key).trim()||(!isNaN(+a)&&!isNaN(+q.key)&&+a==+q.key));
+ return{r:ok?'Correct':'Incorrect',m:ok?q.pos:-q.neg,ans,pos};
+}
+function summ(a){
+ const J=a.rows.map(judge),K=J.some(Boolean),secs=[...new Set(a.rows.map(r=>r.sec))],c=(r,s)=>r.filter(x=>x.status==s).length;
+ const sc=s=>{let C=0,I=0,m=0,mx=0;a.rows.forEach((x,i)=>{const j=J[i];if(x.sec==s&&j){mx+=j.pos;m+=j.m;if(j.r=='Correct')C++;if(j.r=='Incorrect')I++}});return[C,I,m,mx]};
+ const T=secs.map(sc).reduce((p,v)=>p.map((n,i)=>n+v[i]),[0,0,0,0]);
+ return `<p>${esc(a.date)} · ${modeName(a.mode)} · Timer ${a.timer?'on':'off'} · Total time ${fmt(a.total)}${K?` · <b>Score ${T[2]} / ${T[3]}</b> (${T[0]} correct, ${T[1]} incorrect)`:''}</p>
+ <table><tr><th>Section<th>Qs<th>Answered<th>Answered & marked<th>Marked<th>Not answered<th>Not visited${K?'<th>Correct<th>Incorrect<th>Score':''}<th>Time</tr>${secs.map(s=>{const r=a.rows.filter(x=>x.sec==s),v=sc(s);return `<tr><td>${s}<td>${r.length}<td>${c(r,STN.a)}<td>${c(r,STN.am)}<td>${c(r,STN.m)}<td>${c(r,STN.na)}<td>${c(r,STN.nv)}${K?`<td>${v[0]}<td>${v[1]}<td>${v[2]} / ${v[3]}`:''}<td>${fmt(r.reduce((t,x)=>t+x.time,0))}</tr>`}).join('')}</table>
+ <table><tr><th>Sec<th>Q<th>Type<th>Status<th>Response${K?'<th>Correct ans<th>Result<th>Marks':''}<th>Time</tr>${a.rows.map((x,i)=>{const j=J[i];return `<tr><td>${x.sec}<td>${x.no}<td>${x.type}<td>${x.status}<td>${esc(x.resp)}${K?(j?`<td>${esc(j.ans)}<td>${j.r}<td>${j.m}`:'<td><td><td>'):''}<td>${fmt(x.time)}</tr>`}).join('')}</table>
+ <button class=bl onclick=showSolutions()>View Solutions &amp; Explanations</button> <button onclick=expA()>Download attempt (JSON)</button>`;
+}
+
+function dashboard(i,fromH){
+ const hist=LS('cathistory',[]),a=i==null?LS('cata',null):hist[i],B=fromH?'showHistory()':'home()';
+ if(!a)return alert('Complete a mock first to generate the dashboard.');
+ const attempts=[...hist]; if(!attempts.length||attempts[attempts.length-1].date!==a.date)attempts.push(a);
+ const J=a.rows.map(judge), valid=J.filter(Boolean), correct=valid.filter(x=>x.r==='Correct').length, incorrect=valid.filter(x=>x.r==='Incorrect').length;
+ const attempted=correct+incorrect, unattempted=a.rows.length-attempted, score=valid.reduce((t,x)=>t+x.m,0), max=valid.reduce((t,x)=>t+x.pos,0);
+ const acc=attempted?Math.round(correct/attempted*100):0, overall=Math.round((correct/a.rows.length)*100);
+ const secNames=[...new Set(a.rows.map(x=>x.sec))];
+ const secData=secNames.map(sec=>{const rows=a.rows.filter(x=>x.sec===sec), js=rows.map(judge).filter(Boolean), c=js.filter(x=>x.r==='Correct').length, att=js.filter(x=>x.r!=='Unattempted').length, t=rows.reduce((n,x)=>n+x.time,0), un=rows.length-att; return {sec,n:rows.length,c,att,un,acc:att?Math.round(c/att*100):0,score:js.reduce((n,x)=>n+x.m,0),time:t,avg:rows.length?t/rows.length:0};});
+ const typeData=['MCQ','TITA'].map(type=>{const rows=a.rows.filter(x=>x.type===type),js=rows.map(judge).filter(Boolean),c=js.filter(x=>x.r==='Correct').length,att=js.filter(x=>x.r!=='Unattempted').length;return {type,n:rows.length,c,att,acc:att?Math.round(c/att*100):0,time:rows.reduce((n,x)=>n+x.time,0)};}).filter(x=>x.n);
+ const qSlow=[...a.rows].sort((x,y)=>y.time-x.time).slice(0,5);
+ const insights=[];
+ secData.forEach(d=>{if(d.acc<60&&d.att)insights.push(`${d.sec}: accuracy is ${d.acc}% — review incorrect questions before doing another timed set.`); if(d.avg>180)insights.push(`${d.sec}: average time is ${Math.round(d.avg/60*10)/10} min/question — practise faster set/question selection.`); if(d.un>0)insights.push(`${d.sec}: ${d.un} question${d.un>1?'s':''} left unattempted — work on time allocation.`);});
+ if(!insights.length) insights.push('Your attempt does not show a single obvious bottleneck. Compare the section bars and slowest questions to choose what to practise next.');
+ const trend=attempts.slice(-8).map((x,i)=>{const js=x.rows.map(judge).filter(Boolean),sc=js.reduce((n,j)=>n+j.m,0);return {label:'M'+(attempts.length-8+i+1),score:sc};});
+ root.innerHTML=`<div class=hd><b>Performance Dashboard</b><button onclick=${B}>${fromH?'Back to History':'Back to Mock Home'}</button></div><div class=pg dash>
+ <div class=dashhead><div><h2 style="margin:0">Mock analysis</h2><small>${esc(a.date)} · ${modeName(a.mode)}</small></div><button onclick=expA(${i==null?'':i})>Download attempt (JSON)</button></div>
+ <div class=kpis><div class=card><small>Score</small><strong>${score}</strong><span>/ ${max||0}</span></div><div class=card><small>Accuracy</small><strong>${acc}%</strong><span>${correct} correct / ${attempted} attempted</span></div><div class=card><small>Unattempted</small><strong>${unattempted}</strong><span>of ${a.rows.length}</span></div><div class=card><small>Total time</small><strong>${fmt(a.total)}</strong><span>${a.rows.length?Math.round(a.total/a.rows.length):0}s / question</span></div></div>
+ <div class=dgrid><section class=dpanel><h3>Section accuracy</h3><div class=bars>${secData.map(d=>`<div class=barrow><div class=barlabel><b>${d.sec}</b><span>${d.acc}% · ${d.c}/${d.att||0} correct</span></div><div class=bar><i style="width:${Math.max(0,Math.min(100,d.acc))}%"></i></div><small>${fmt(d.time)} total · ${d.un} unattempted</small></div>`).join('')}</div></section>
+ <section class=dpanel><h3>Question-type accuracy</h3><div class=minirows>${typeData.map(d=>`<div class=minirow><b>${d.type}</b><span>${d.acc}%</span><span>${d.c}/${d.att||0} correct</span><span>${fmt(d.time)}</span></div>`).join('')}</div><h3 style="margin-top:20px">What to improve</h3><ul class=ins>${insights.slice(0,5).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section></div>
+ <section class=dpanel><h3>Slowest questions</h3><table><tr><th>Section<th>Question<th>Time<th>Result</tr>${qSlow.map(r=>{const j=judge(r);return `<tr><td>${r.sec}<td>${r.no}<td>${fmt(r.time)}<td>${j?j.r:'—'}</tr>`}).join('')}</table></section>
+ ${trend.length>1?`<section class=dpanel><h3>Score trend</h3><div class=trend>${trend.map((d,i)=>`<div class=trendcol><span>${d.score}</span><i style="height:${Math.max(8,Math.min(150,(d.score/(Math.max(...trend.map(x=>x.score),1)))*150))}px"></i><small>${d.label}</small></div>`).join('')}</div><small>Trend uses your most recent submitted attempts stored in this browser.</small></section>`:''}
+ <p><button class=backbtn onclick=${B}>${fromH?'Back to History':'Back to Mock Home'}</button></p></div>`;
+}
+
+function showSolutions(i,fromH){
+ const a=i==null?LS('cata',null):LS('cathistory',[])[i],B=fromH?'showHistory()':'home()',BT=fromH?'Back to History':'Back to Mock Home'; if(!a)return alert('No submitted mock found.');
+ const rows=a.rows||[], secs=[...new Set(rows.map(x=>x.sec))];
+ const card=(r)=>{const q=fq(r.id);if(!q)return '';const j=judge(r);
+  const ans=j?j.ans:(q.key==null?'':q.type=='MCQ'?'ABCDE'[q.key]:q.key);
+  const mine=r.resp||'—';
+  const optsHtml=q.type=='MCQ'?`<div style="margin:8px 0">${q.opts.map((o,k)=>{const L='ABCDE'[k],right=q.key===k,pick=r.raw===k;
+   return `<div style="padding:4px 8px;margin:2px 0;border-radius:4px;${right?'background:#e3f4e5;border:1px solid #4caf50':pick?'background:#fde8e6;border:1px solid #e0412f':'border:1px solid transparent'}"><b>${L})</b> ${esc(o)}${right?' <b style="color:#2e7d32">✓ correct</b>':''}${pick&&!right?' <b style="color:#c62828">✗ your answer</b>':''}${pick&&right?' <b>(your answer)</b>':''}</div>`}).join('')}</div>`:'';
+  const tag=j?(j.r=='Correct'?'✓':j.r=='Incorrect'?'✗':'—'):'';
+  return `<details class=solq><summary>${tag} Question ${r.no} · Correct answer: ${esc(String(ans))}${j?` · Your response: ${esc(String(mine))} · ${j.r}`:''}</summary><div class=sole><div class=solmeta>${q.type} · +${q.pos} / −${q.neg}</div>
+   ${q.passage?`<details style="margin:6px 0"><summary style="font-weight:normal;padding:6px;background:#f7f7f7;cursor:pointer">Show passage / data set</summary><div class=pt style="padding:8px;max-height:320px;overflow:auto">${esc(q.passage)}</div></details>`:''}
+   <b>Question:</b><br>${esc(q.q)}${q.img?`<br><img class=question-image src="${ri(q.img)}" alt="Question figure">`:''}${optsHtml}
+   ${q.solutionImg?`<br><b>Solution / table image:</b><br><img class=question-image src="${ri(q.solutionImg)}" alt="Solution figure">`:''}
+   <br><b>Explanation:</b><br>${esc(q.solution||'No explanation was provided for this question.')}</div></details>`};
+ root.innerHTML=`<div class=hd><b>Solutions &amp; Explanations</b><button onclick=${B}>${BT}</button></div><div class="pg solbox">
+ <h2>${modeName(a.mode)} — Solutions <small>(${esc(a.date)})</small></h2>
+ <p>Each question shows your answer, the correct option and the full explanation. <button onclick="document.querySelectorAll('.solq').forEach(d=>d.open=true)">Expand all</button> <button onclick="document.querySelectorAll('.solq').forEach(d=>d.open=false)">Collapse all</button></p>
+ ${secs.map(sec=>`<div class=solsec><h3>${sec}</h3>${rows.filter(x=>x.sec==sec).map(card).join('')}</div>`).join('')}
+ <button class=backbtn onclick=${B}>${BT}</button></div>`;
+}
+function expA(i){const raw=i==null||i===''?localStorage.getItem('cata'):JSON.stringify(LS('cathistory',[])[i]),b=new Blob([raw],{type:'application/json'}),l=document.createElement('a');l.href=URL.createObjectURL(b);l.download='cat_attempt.json';l.click()}
+
+/* ---------- TEST ---------- */
+function start(){
+ cfg.timer=$('#tmr').checked;SECS.forEach(s=>cfg.mins[s]=+$('#m'+s).value||40);SV('catcfg',cfg);
+ const mode=$('#mode').value,sel={};let mins={...cfg.mins};
+ if(mode=='custom'){
+  const cs=$('#cs').value,N=Math.max(1,parseInt($('#cn').value)||0),pool=Q.filter(q=>cs=='ALL'||q.sec==cs);
+  if(!pool.length)return alert('No unattempted questions left for that selection. Add more via admin, or return attempted ones from History.');
+  if(N>pool.length)alert('Only '+pool.length+' unattempted question(s) available — starting with those.');
+  const pick=pickQs(pool,Math.min(N,pool.length),$('#co').value=='rnd');
+  SECS.forEach(s=>{const l=pick.filter(q=>q.sec==s);if(l.length)sel[s]=l});
+  const tot=Math.max(1,+$('#cm').value||Math.round(pick.length*40/24));
+  Object.keys(sel).forEach(s=>mins[s]=Math.max(0.5,tot*sel[s].length/pick.length));
+ }else(mode=='full'?SECS:[mode]).forEach(s=>{const l=Q.filter(q=>q.sec==s);if(l.length)sel[s]=l});
+ const secs=SECS.filter(s=>sel[s]);
+ if(!secs.length)return alert('No unattempted questions in the selected section(s). Add some via admin (Ctrl+Shift+A) or return attempted ones from History.');
+ T={mode,secs,sel,si:0,st:{},mins,timer:cfg.timer,start:Date.now()};
+ secs.forEach(s=>sel[s].forEach(q=>T.st[q.id]={v:0,a:null,m:0,t:0}));
+ beginSec();
+}
+function beginSec(){
+ const s=T.secs[T.si];T.qs=T.sel[s];T.secStart=Date.now();T.end=T.secStart+T.mins[s]*60000;T.shown=0;T.qt=Date.now();T.tmp=null;
+ root.innerHTML=`<div class=hd><span>Common Admission Test (Mock)</span><span class=cand>Candidate<span class=ph></span></span></div>
+ <div class=sb>${T.secs.map((x,i)=>`<span class="tab ${i==T.si?'on':''}">${x}</span>`).join('')}<span class=tm>${T.timer?'Time Left':'Time Elapsed'}<b id=clk>--:--</b></span></div>
+ <div class=main><div class=lc><div class=sp><div id=lp></div><div id=qp></div></div>
+ <div class=ft><button onclick=sv(1)>Mark for Review &amp; Next</button><button onclick=clr()>Clear Response</button><button class="bl r" onclick=sv(0)>Save &amp; Next</button></div></div><div class=pal id=pal></div></div>`;
+ clearInterval(T.iv);T.iv=setInterval(tick,500);tick();go(0);
+}
+function tick(){
+ const el=$('#clk');if(!el||!T)return;const r=(T.end-Date.now())/1000;
+ el.textContent=T.timer?fmt(r):fmt((Date.now()-T.secStart)/1000);
+ if(T.timer&&r<=0)endSec();
+}
+function lap(){const q=T.qs[T.cur];if(q&&T.shown)T.st[q.id].t+=(Date.now()-T.qt)/1000;T.qt=Date.now()}
+function go(i){
+ lap();T.cur=i;T.shown=1;const s=T.st[T.qs[i].id];s.v=1;T.tmp=s.a;draw();
+}
+function draw(){
+ const q=T.qs[T.cur],lp=$('#lp');
+ if(q.passage){lp.style.display='block';if(lp.dataset.p!==q.passage){lp.dataset.p=q.passage;lp.innerHTML=`<div class=pt>${esc(q.passage)}</div>`}}else{lp.style.display='none';lp.dataset.p=''}
+ const keys=['7','8','9','4','5','6','1','2','3','0','.','-'];
+ $('#qp').innerHTML=`<div class=qh>Question No. ${T.cur+1}<span>Marks for correct answer ${q.pos} | Negative marks ${q.neg}</span></div><div class=qb>
+ <div class=pt>${esc(q.q)}</div>${q.img?`<img class="question-image" src="${ri(q.img)}" alt="Question figure">`:''}<hr>`+
+ (q.type=='TITA'?`<p>Answer: <input id=ti value="${esc(T.tmp==null?'':T.tmp)}" oninput="T.tmp=this.value"></p><div class=kp>${keys.map(k=>`<button onclick="key('${k}')">${k}</button>`).join('')}<button class=w onclick="key('B')">Backspace</button><button class=w onclick="key('C')">Clear All</button></div>`
+ :q.opts.map((o,i)=>`<label class=op><input type=radio name=o ${T.tmp===i?'checked':''} onclick="T.tmp=${i}"> ${esc(o)}</label>`).join(''))+`</div>`;
+ const cnt={nv:0,na:0,a:0,m:0,am:0};T.qs.forEach(x=>cnt[stat(T.st[x.id])]++);
+ $('#pal').innerHTML=`<div class=lg>${['a','na','nv','m','am'].map(k=>`<div><span class="p ${k}">${cnt[k]}</span>${STN[k]}</div>`).join('')}</div>
+ <h4>${T.secs[T.si]}</h4><div>${T.qs.map((x,i)=>`<span class="p ${stat(T.st[x.id])} ${i==T.cur?'cu':''}" onclick="go(${i})">${i+1}</span>`).join('')}</div><p><button class=bl onclick=subSec()>Submit</button></p>`;
+}
+function key(k){let v=T.tmp==null?'':String(T.tmp);v=k=='B'?v.slice(0,-1):k=='C'?'':v+k;T.tmp=v;$('#ti').value=v}
+function sv(m){const s=T.st[T.qs[T.cur].id];s.a=(T.tmp==null||T.tmp==='')?null:T.tmp;s.m=m;go(Math.min(T.cur+1,T.qs.length-1))}
+function clr(){T.tmp=null;T.st[T.qs[T.cur].id].a=null;draw()}
+function subSec(){
+ const c=T.qs.filter(q=>{const a=T.st[q.id].a;return a!==null&&a!==''}).length,last=T.si==T.secs.length-1;
+ if(confirm(`Submit ${T.secs[T.si]}?\nAnswered: ${c}  Not answered: ${T.qs.length-c}`+(last?'':'\nYou cannot return to this section.')))endSec();
+}
+function endSec(){lap();clearInterval(T.iv);T.shown=0;if(T.si<T.secs.length-1){T.si++;beginSec()}else finish()}
+function finish(){
+ const rows=[],seen=new Set();
+ T.secs.forEach(s=>T.sel[s].forEach((q,i)=>{const x=T.st[q.id],st=STN[stat(x)];
+  rows.push({id:q.id,raw:x.a,sec:s,no:i+1,type:q.type,status:st,resp:x.a===null||x.a===''?'':q.type=='MCQ'?'ABCDE'[x.a]:x.a,time:Math.round(x.t)});if(x.v)seen.add(q.id)}));
+ const attempt={date:new Date().toLocaleString(),mode:T.mode,timer:T.timer,mins:T.mins,total:Math.round((Date.now()-T.start)/1000),rows};
+ Q.forEach(q=>{if(seen.has(q.id))ARCH[q.id]=q});Q=Q.filter(q=>!seen.has(q.id));
+ SV('catarch',ARCH);SV('catq',Q);
+ const hist=LS('cathistory',[]);hist.push(attempt);SV('cathistory',hist.slice(-300));SV('cata',attempt);
+ T=null;location.hash='';home();
+}
+function showHistory(){
+ const hist=LS('cathistory',[]),na=Object.keys(ARCH).length;
+ const row=(a,i)=>{const J=a.rows.map(judge),K=J.some(Boolean),ans=a.rows.filter(r=>r.resp!=='').length,c=J.filter(x=>x&&x.r=='Correct').length,sc=J.reduce((t,x)=>t+(x?x.m:0),0),mx=J.reduce((t,x)=>t+(x?x.pos:0),0);
+  return `<tr><td>${i+1}<td>${esc(a.date)}<td>${modeName(a.mode)}<td>${a.rows.length}<td>${ans}<td>${K?sc+' / '+mx:'—'}<td>${K&&ans?Math.round(c/ans*100)+'%':'—'}<td>${fmt(a.total)}<td><button onclick="attDetail(${i})">Details</button> <button onclick="showSolutions(${i},1)">Solutions</button> <button onclick="dashboard(${i},1)">Dashboard</button> <button onclick="reuse(${i})">Reuse questions</button></tr>`};
+ root.innerHTML=`<div class=hd><b>Attempt history</b><button onclick=home()>Back to Mock Home</button></div><div class=pg>
+ <p>${hist.length} attempt(s) · ${na} attempted question(s) archived — they never reappear in new tests, but stay here with their solutions. <button onclick=restoreAll()>Return ALL attempted questions to the bank</button></p>
+ ${hist.length?`<table><tr><th>#<th>Date<th>Mode<th>Qs<th>Answered<th>Score<th>Accuracy<th>Time<th></tr>${hist.map((a,i)=>row(a,i)).reverse().join('')}</table>`:'<p>No attempts yet.</p>'}
+ <button class=backbtn onclick=home()>Back to Mock Home</button></div>`;
+}
+function attDetail(i){const a=LS('cathistory',[])[i];root.innerHTML=`<div class=hd><b>Attempt ${i+1}</b><button onclick=showHistory()>Back to History</button></div><div class=pg>${summ(a)}<p><button class=bl onclick="showSolutions(${i},1)">Solutions</button> <button onclick="dashboard(${i},1)">Dashboard</button> <button onclick=showHistory()>Back to History</button></p></div>`}
+function reuse(i){
+ const a=LS('cathistory',[])[i];let n=0;
+ a.rows.forEach(r=>{if(ARCH[r.id]){Q.push(ARCH[r.id]);delete ARCH[r.id];n++}});
+ SV('catq',Q);SV('catarch',ARCH);alert(n+' question(s) returned to the bank. They can appear in new tests again.');showHistory();
+}
+function restoreAll(){
+ if(!confirm('Return all '+Object.keys(ARCH).length+' attempted questions to the bank so they can appear again?'))return;
+ Q.push(...Object.values(ARCH));ARCH={};SV('catq',Q);SV('catarch',ARCH);location.hash==='#admin'?admin():showHistory();
+}
+
+/* ---------- ADMIN (back door) ---------- */
+function admin(){
+ const e=Q.find(q=>q.id===ed)||{sec:cfg.ls||'VARC',type:'MCQ',passage:cfg.lp||'',q:'',img:'',solution:'',pos:3,neg:1,opts:[]};IMG=e.img||'';
+ const cn={};
+ root.innerHTML=`<div class=hd><b>Admin — question bank</b><button onclick="ed=null;location.hash=''">Back</button></div><div class=pg>
+ <h3>${ed?'Edit':'Add'} question</h3>
+ <p>Section <select id=as>${SECS.map(s=>`<option ${s==e.sec?'selected':''}>${s}</option>`).join('')}</select>
+ &nbsp;Type <select id=at onchange="$('#ao').style.display=this.value=='MCQ'?'':'none'"><option ${e.type=='MCQ'?'selected':''}>MCQ</option><option ${e.type=='TITA'?'selected':''}>TITA</option></select>
+ &nbsp;Marks + <input id=ap type=number value=${e.pos} style="width:55px"> Negative <input id=an type=number value=${e.neg} style="width:55px"> <small>(set negative 0 for TITA)</small></p>
+ <p>Passage / data set <small>(optional; stays filled after saving so you can add the next question of the same set)</small><br><textarea id=apass rows=4>${esc(e.passage)}</textarea></p>
+ <p>Question<br><textarea id=aq rows=3>${esc(e.q)}</textarea></p>
+ <p><b>Image</b> <input type=file accept="image/*" onchange="pic(this.files[0])"> <span id=ai>${IMG?'image attached':''}</span> <button onclick="IMG='';$('#ai').textContent='';$('#iu').value='';$('#ip').innerHTML=''">Remove</button><br>
+<small>Or paste an image URL / data URI:</small><br><input id=iu class=f value="" placeholder="https://... or data:image/..." oninput="IMG=this.value.trim();$('#ai').textContent=IMG?'image attached':'';$('#ip').innerHTML=IMG?'<img style=\"max-width:420px;max-height:240px;margin-top:6px\" src=\"'+IMG+'\">':''" style="width:100%"><div id=ip>${IMG?`<img style="max-width:420px;max-height:240px;margin-top:6px" src="${IMG}">`:''}</div></p>
+ <p><b>Solution / Explanation</b> <small>(shown after the mock is submitted)</small><br><textarea id=asol rows=6 style="width:100%">${esc(e.solution||'')}</textarea></p>
+ <p>Correct answer <input id=ao2 style="width:120px" value="${esc(e.key==null?'':e.type=='MCQ'?'ABCDE'[e.key]:e.key)}"> <small>(optional · A–D for MCQ, the value for TITA)</small></p>
+ <div id=ao style="display:${e.type=='MCQ'?'':'none'}">Options${[0,1,2,3,4].map(i=>`<br>${'ABCDE'[i]}) <input class=f id=o${i} value="${esc(e.opts[i]||'')}" style="width:90%">`).join('')}</div>
+ <p><button class=bl onclick=addQ()>${ed?'Update':'Save'} question</button> <button onclick="ed=null;cfg.lp='';admin()">Reset form</button></p>
+ <h3>Question bank (${Q.length} unattempted)</h3>
+ <p><small>${Object.keys(ARCH).length} attempted question(s) are archived and hidden from new tests.</small> <button onclick=restoreAll()>Return them to the bank</button></p>
+ <table><tr><th>Sec<th>#<th>Type<th>Key<th>Question<th>Set<th></tr>${Q.map(q=>{cn[q.sec]=(cn[q.sec]||0)+1;return `<tr><td>${q.sec}<td>${cn[q.sec]}<td>${q.type}<td>${q.key==null?'':q.type=='MCQ'?'ABCDE'[q.key]:esc(q.key)}<td>${esc((q.q||'[image]').slice(0,70))}<td>${q.passage?'yes':''}<td><button onclick="ed='${q.id}';admin()">Edit</button> <button onclick="del('${q.id}')">Delete</button></tr>`}).join('')}</table>
+ <h3>Set answer keys in bulk</h3>
+ <p>Section <select id=ks>${SECS.map(s=>`<option>${s}</option>`).join('')}</select> <small>Paste like “1.4 2.D 3.A …” or just “4 D A A …” in question order</small><br><textarea id=kt rows=2></textarea><button onclick=setKeys()>Apply keys</button></p>
+ <h3>Bulk import / export (JSON)</h3>
+ <small>JSON may be an array of questions, or {"assets":{...},"questions":[...]}. Each question supports img and solutionImg asset keys. — import appends to the bank.</small>
+ <input type=file accept=".json" onchange="const r=new FileReader();r.onload=()=>$('#js').value=r.result;r.readAsText(this.files[0])"> <small>(or pick a .json file to load it into the box)</small><textarea id=js rows=8></textarea><p><button onclick=imp()>Import (append)</button> <button onclick="$('#js').value=JSON.stringify({assets:AS,questions:Q.map(({id,...r})=>r)},null,1)">Export all to box</button>
+ <button onclick=resetBank()>Reset / Remove All Questions</button>
+ <button onclick="if(confirm('Clear stored latest attempt?')){localStorage.removeItem('cata');alert('Cleared')}">Clear latest attempt</button></p></div>`;
+}
+function pic(f){if(!f)return;const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const k=Math.min(1,900/i.width),c=document.createElement('canvas');c.width=i.width*k;c.height=i.height*k;c.getContext('2d').drawImage(i,0,0,c.width,c.height);IMG=c.toDataURL('image/jpeg',.8);$('#ai').textContent='image attached';if($('#iu'))$('#iu').value='';if($('#ip'))$('#ip').innerHTML='<img style=\"max-width:420px;max-height:240px;margin-top:6px\" src=\"'+IMG+'\">'};i.src=r.result};r.readAsDataURL(f)}
+function addQ(){
+ const q={id:ed||nid(),sec:$('#as').value,type:$('#at').value,passage:$('#apass').value.trim(),q:$('#aq').value.trim(),img:IMG,solution:$('#asol').value.trim(),pos:+$('#ap').value,neg:+$('#an').value,opts:[0,1,2,3,4].map(i=>($('#o'+i)||{value:''}).value.trim()).filter(Boolean)};
+ const kr=$('#ao2').value.trim();q.key=kr===''?null:q.type=='MCQ'?'ABCDE'.indexOf(kr.toUpperCase()):kr;
+ if(q.type=='MCQ'&&(q.key===-1||q.key>=q.opts.length))return alert('MCQ answer must be A, B, C, D or E (and match an existing option)');
+ if(!q.q&&!q.img)return alert('Enter question text or an image');
+ if(q.type=='MCQ'&&q.opts.length<2)return alert('Add at least 2 options');
+ if(q.type=='TITA')q.opts=[];
+ ed?Q=Q.map(x=>x.id===ed?q:x):Q.push(q);
+ cfg.ls=q.sec;cfg.lp=q.passage;SV('catcfg',cfg);SV('catq',Q);ed=null;admin();
+}
+function del(id){Q=Q.filter(q=>q.id!==id);SV('catq',Q);admin()}
+function setKeys(){
+ const s=$('#ks').value,t=$('#kt').value.trim(),L=Q.filter(q=>q.sec==s);
+ let m=[...t.matchAll(/(\d+)\s*[.:)=-]\s*([A-Da-d]|-?[\d.]+)\b/g)].map(x=>[+x[1]-1,x[2]]);
+ if(!m.length)m=t.split(/[\s,;]+/).filter(Boolean).map((v,i)=>[i,v]);
+ let n=0;m.forEach(([i,v])=>{const q=L[i];if(!q)return;if(q.type=='MCQ'){const k='ABCDE'.indexOf(v.toUpperCase());if(k<0)return;q.key=k}else q.key=v;n++});
+ SV('catq',Q);alert(n+' keys set');admin();
+}
+const pk=(k,t)=>{if(k==null||k==='')return null;if(t!='MCQ')return String(k).trim();const i=typeof k=='number'?k:'ABCDE'.indexOf(String(k).trim().toUpperCase());return i<0?null:i};
+function imp(){
+ try{
+  const z=JSON.parse($('#js').value);
+  const a=Array.isArray(z)?z:(z.questions||[]);
+  if(!Array.isArray(a))throw 0;
+  if(z.assets&&typeof z.assets==='object')Object.assign(AS,z.assets);
+  const seen=new Set([...Q,...Object.values(ARCH)].map(fp));let add=0,skip=0;
+  a.forEach(x=>{const t=x.type=='TITA'?'TITA':'MCQ',s=String(x.sec).toUpperCase();
+   const o={id:nid(),sec:SECS.includes(s)?s:'QA',type:t,passage:x.passage||'',q:x.q||'',img:x.img||'',solutionImg:x.solutionImg||'',pos:x.pos==null?3:x.pos,neg:x.neg==null?(t=='TITA'?0:1):x.neg,opts:t=='TITA'?[]:(x.opts||[]),key:pk(x.key,t),solution:x.solution||''};
+   const f=fp(o);if(seen.has(f)){skip++;return}seen.add(f);Q.push(o);add++});
+  SV('catassets',AS);SV('catq',Q);alert(add+' question(s) added'+(skip?', '+skip+' skipped (already in the bank or already attempted).':'.'));admin()
+ }catch(e){alert('Invalid JSON')}
+}
+route();
+</script></body></html>
