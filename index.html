@@ -26,6 +26,7 @@ button{padding:7px 14px;border:1px solid #9fb0c7;background:#fff;cursor:pointer;
 textarea,.pg input.f{width:100%}small{color:#666}
 
 .dashhead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}.card,.dpanel{border:1px solid #c8d2df;background:#fff;border-radius:8px;padding:14px}.card small,.card span{display:block;color:#667085}.card strong{font-size:28px;display:inline-block;margin:5px 4px 2px 0}.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}.dpanel h3{margin:0 0 12px}.barrow{margin:12px 0}.barlabel{display:flex;justify-content:space-between;gap:8px}.bar{height:12px;background:#e7edf3;border-radius:8px;overflow:hidden;margin:5px 0}.bar i{display:block;height:100%;background:#2b6cb0}.barrow small{color:#667085}.minirow{display:grid;grid-template-columns:70px 60px 1fr 90px;gap:8px;padding:9px 0;border-bottom:1px solid #e6e9ee}.ins{padding-left:20px;margin-bottom:0}.ins li{margin:8px 0}.trend{height:190px;display:flex;align-items:end;gap:18px;padding:12px 8px 0;border-bottom:1px solid #bbb}.trendcol{height:180px;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:4px}.trendcol i{display:block;width:34px;background:#2b6cb0;border-radius:4px 4px 0 0}.trendcol span{font-weight:700}.trendcol small{color:#667085}@media(max-width:800px){.kpis{grid-template-columns:1fr 1fr}.dgrid{grid-template-columns:1fr}.dashhead{align-items:flex-start;flex-direction:column}}@media(max-width:520px){.kpis{grid-template-columns:1fr}.minirow{grid-template-columns:55px 50px 1fr 70px;font-size:12px}}
+.aibox .aim{margin:6px 0;padding:8px 10px;border-radius:6px;white-space:pre-wrap;line-height:1.5}.aibox .u{background:#eef3fb;border:1px solid #c9d8ee}.aibox .a{background:#f7f7f7;border:1px solid #ddd}.aibox .e{color:#c62828}.aiin{display:flex;gap:6px;margin-top:6px}.aiin input{flex:1;padding:6px}
 </style></head><body><div id="r"></div>
 <script>
 const $=s=>document.querySelector(s),root=$('#r'),SECS=['VARC','DILR','QA'];
@@ -132,7 +133,7 @@ function dashboard(i,fromH){
 }
 
 function showSolutions(i,fromH){
- const a=i==null?LS('cata',null):LS('cathistory',[])[i],B=fromH?'showHistory()':'home()',BT=fromH?'Back to History':'Back to Mock Home'; if(!a)return alert('No submitted mock found.');
+ const a=i==null?LS('cata',null):LS('cathistory',[])[i],B=fromH?'showHistory()':'home()',BT=fromH?'Back to History':'Back to Mock Home'; if(!a)return alert('No submitted mock found.');AIA=a;
  const rows=a.rows||[], secs=[...new Set(rows.map(x=>x.sec))];
  const card=(r)=>{const q=fq(r.id);if(!q)return '';const j=judge(r);
   const ans=j?j.ans:(q.key==null?'':q.type=='MCQ'?'ABCDE'[q.key]:q.key);
@@ -144,7 +145,7 @@ function showSolutions(i,fromH){
    ${q.passage?`<details style="margin:6px 0"><summary style="font-weight:normal;padding:6px;background:#f7f7f7;cursor:pointer">Show passage / data set</summary><div class=pt style="padding:8px;max-height:320px;overflow:auto">${esc(q.passage)}</div></details>`:''}
    <b>Question:</b><br>${esc(q.q)}${q.img?`<br><img class=question-image src="${ri(q.img)}" alt="Question figure">`:''}${optsHtml}
    ${q.solutionImg?`<br><b>Solution / table image:</b><br><img class=question-image src="${ri(q.solutionImg)}" alt="Solution figure">`:''}
-   <br><b>Explanation:</b><br>${esc(q.solution||'No explanation was provided for this question.')}</div></details>`};
+   <br><b>Explanation:</b><br>${esc(q.solution||'No explanation was provided for this question.')}<div class=aibox id="ai_${q.id}" style="margin-top:10px"><button onclick="aiOpen('${q.id}')">✨ Ask AI about this question</button></div></div></details>`};
  root.innerHTML=`<div class=hd><b>Solutions &amp; Explanations</b><button onclick=${B}>${BT}</button></div><div class="pg solbox">
  <h2>${modeName(a.mode)} — Solutions <small>(${esc(a.date)})</small></h2>
  <p>Each question shows your answer, the correct option and the full explanation. <button onclick="document.querySelectorAll('.solq').forEach(d=>d.open=true)">Expand all</button> <button onclick="document.querySelectorAll('.solq').forEach(d=>d.open=false)">Collapse all</button></p>
@@ -299,6 +300,38 @@ function imp(){
    const f=fp(o);if(seen.has(f)){skip++;return}seen.add(f);Q.push(o);add++});
   SV('catassets',AS);SV('catq',Q);alert(add+' question(s) added'+(skip?', '+skip+' skipped (already in the bank or already attempted).':'.'));admin()
  }catch(e){alert('Invalid JSON')}
+}
+/* ---------- AI tutor (calls /api/ask on Vercel) ---------- */
+let AIA=null;const AIC={};
+function aiCtx(q,r){
+ const L='ABCDE',ans=q.key==null?'(not set)':q.type=='MCQ'?L[q.key]:q.key;
+ return `Section: ${q.sec}\n${q.passage?'PASSAGE / DATA:\n'+q.passage+'\n\n':''}QUESTION:\n${q.q}\n${q.type=='MCQ'?'OPTIONS:\n'+q.opts.map((o,i)=>L[i]+') '+o).join('\n'):'(Type-in answer)'}\nCORRECT ANSWER: ${ans}\nSTUDENT RESPONSE: ${r&&r.resp?r.resp:'(not attempted)'}\nBOOK EXPLANATION (may be empty):\n${q.solution||''}`;
+}
+function aiRender(id,loading){
+ const c=AIC[id],el=document.getElementById('aic_'+id);if(!el)return;
+ const fmtT=t=>esc(t).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
+ el.innerHTML=c.m.map(m=>`<div class="aim ${m.role=='user'?'u':'a'}"><b>${m.role=='user'?'You':'AI tutor'}:</b> ${fmtT(m.content)}</div>`).join('')+(loading?'<div class="aim a"><i>Thinking…</i></div>':'')+(c.err?`<div class="aim e">${esc(c.err)}</div>`:'');
+}
+function aiOpen(id){
+ const box=document.getElementById('ai_'+id);if(!AIC[id])AIC[id]={m:[],err:''};
+ box.innerHTML=`<div id=aic_${id}></div><div class=aiin><input id=aii_${id} placeholder="Ask a follow-up…" onkeydown="if(event.key=='Enter')aiSend('${id}')"><button class=bl onclick="aiSend('${id}')">Send</button></div>`;
+ if(!AIC[id].m.length)aiSend(id,'Explain why the correct answer is right and, if I got it wrong or skipped it, where my reasoning likely went off. Be concise and practical.');else aiRender(id);
+}
+async function aiSend(id,text){
+ const inp=document.getElementById('aii_'+id),c=AIC[id];text=text||(inp&&inp.value.trim());if(!text)return;if(inp)inp.value='';
+ let code=localStorage.getItem('cataicode');
+ if(!code){code=prompt('Enter your AI access code (the ACCESS_CODE you set in Vercel):');if(!code)return;localStorage.setItem('cataicode',code)}
+ c.err='';c.m.push({role:'user',content:text});aiRender(id,true);
+ try{
+  const q=fq(id),r=(AIA&&AIA.rows.find(x=>x.id==id))||null;
+  const res=await fetch('/api/ask',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({code,context:aiCtx(q,r),messages:c.m})});
+  let d={};try{d=await res.json()}catch(e){}
+  if(res.status==401){localStorage.removeItem('cataicode');throw new Error('Wrong access code — click Send again to re-enter it.')}
+  if(res.status==404)throw new Error('AI endpoint not found. It only works on the deployed Vercel site, with the api/ask.js file in the repo.');
+  if(!res.ok)throw new Error(d.error||'AI request failed ('+res.status+')');
+  c.m.push({role:'assistant',content:d.text||'(empty reply)'});
+ }catch(e){c.m.pop();c.err=String(e.message||e)}
+ aiRender(id);
 }
 route();
 </script></body></html>
