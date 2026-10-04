@@ -3,7 +3,7 @@
 //   GEMINI_API_KEY     FREE option: key from aistudio.google.com/apikey  (used if set)
 //   ANTHROPIC_API_KEY  paid option: key from console.anthropic.com       (used if no Gemini key)
 //   ACCESS_CODE        (required) a password only you know; the page asks for it once
-//   MODEL              (optional) defaults: gemini-2.5-flash-lite  /  claude-sonnet-5-5
+//   MODEL              (optional) defaults: gemini-3.5-flash-lite  /  claude-sonnet-5-5
 const SYSTEM = `You are a sharp, practical CAT (Common Admission Test, India) tutor for VARC, DILR and Quant.
 You are given one question the student attempted, the correct answer, the student's response, and sometimes a book explanation.
 Rules: be concise and concrete. For RC questions, point to the specific part of the passage and name the trap in the wrong options (extreme, out of scope, opposite, half-right). If the student was wrong or skipped, say where their reasoning likely went off and what to do differently next time. If the book explanation seems wrong or incomplete, say so plainly. Plain text, short paragraphs, no headings.`;
@@ -27,7 +27,7 @@ module.exports = async (req, res) => {
   try {
     let r, d, text;
     if (GKEY) {
-      const model = process.env.MODEL || 'gemini-2.5-flash-lite';
+      const model = process.env.MODEL || 'gemini-3.5-flash-lite';
       r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent', {
         method: 'POST',
         headers: { 'content-type': 'application/json', 'x-goog-api-key': GKEY },
