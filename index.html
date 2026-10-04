@@ -78,6 +78,7 @@ function home(){
   &nbsp;Order <select id=co><option value=seq>Bank order</option><option value=rnd>Shuffled (passage sets stay together)</option></select>
   &nbsp;Total time <input type=number min=1 id=cm style="width:60px"> min <small>(auto: ~1.7 min per question)</small>
  </div>
+ <div style="padding:8px 12px;border:1px solid #bbb;margin:8px 0"><b>✨ AI test builder</b> <small>— describe the test you want, e.g. “10 arithmetic questions”, “5 hard geometry TITA”, “a VARC set on inference”</small><div class=aiin><input id=aip placeholder="What should I pick from your question bank?" onkeydown="if(event.key=='Enter')aiBuild()"><button class=bl onclick=aiBuild()>Build test</button></div><div id=aib></div></div>
  <button class=bl onclick=start()>Start test</button> <button onclick=resetBank() style="margin-left:8px">Reset / Remove All Questions</button> <small>&nbsp;Admin: Ctrl+Shift+A (or add #admin to the URL)</small>
  <h3>Latest attempt</h3>${a?summ(a)+`<p><button class=bl onclick=dashboard()>Open Performance Dashboard</button> <button onclick=showHistory()>All attempts</button></p>`:'<p>No attempt yet.</p>'}</div>`;
 }
@@ -333,5 +334,50 @@ async function aiSend(id,text){
  }catch(e){c.m.pop();c.err=String(e.message||e)}
  aiRender(id);
 }
+/* ---------- AI test builder (calls /api/ask with mode:'pick') ---------- */
+let AIP=null;
+async function aiBuild(){
+ const inp=$('#aip'),out=$('#aib'),req=inp.value.trim();
+ if(!req)return;
+ if(!Q.length){out.innerHTML='<p style="color:#c62828">The question bank is empty — there is nothing to pick from.</p>';return}
+ let code=localStorage.getItem('cataicode');
+ if(!code){code=prompt('Enter your AI access code (the ACCESS_CODE you set in Vercel):');if(!code)return;localStorage.setItem('cataicode',code)}
+ const per=Math.max(80,Math.min(260,Math.floor(120000/Q.length)-20)),sets={};let sn=0;
+ const catalog=Q.map((q,i)=>{
+  let tag='',ps='';
+  if(q.passage){const k=q.sec+'|'+q.passage;if(sets[k]==null){sets[k]=++sn;ps=' [passage starts: '+q.passage.replace(/\s+/g,' ').slice(0,100)+']'}tag='set'+sets[k]}
+  return i+'|'+q.sec+'|'+q.type+'|'+tag+'|'+(q.q||'[image question]').replace(/\s+/g,' ').slice(0,per)+ps;
+ }).join('\n');
+ out.innerHTML='<p><i>Looking through your question bank…</i></p>';AIP=null;
+ try{
+  const res=await fetch('/api/ask',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({code,mode:'pick',request:req,catalog})});
+  let d={};try{d=await res.json()}catch(e){}
+  if(res.status==401){localStorage.removeItem('cataicode');throw new Error('Wrong access code — click Build test again to re-enter it.')}
+  if(res.status==404)throw new Error('AI endpoint not found. It only works on the deployed Vercel site, with api/ask.js in the repo.');
+  if(!res.ok)throw new Error(d.error||'AI request failed ('+res.status+')');
+  const ids=[...new Set((d.picks||[]).filter(i=>Number.isInteger(i)&&i>=0&&i<Q.length))].sort((a,b)=>a-b).map(i=>Q[i].id);
+  if(!ids.length){out.innerHTML='<p>'+esc(d.summary||'The AI found no matching questions in your bank.')+'</p>';return}
+  AIP={ids,mins:d.mins||null};
+  out.innerHTML=`<div style="margin-top:8px;padding:8px 10px;border:1px solid #c9d8ee;background:#f7faff"><div>${esc(d.summary||'')}</div>
+   <p><b>${ids.length}</b> question(s) picked${d.mins?' · '+d.mins+' min':''}.</p>
+   <details><summary style="cursor:pointer">Preview picked questions</summary><ol>${ids.map(id=>{const q=Q.find(x=>x.id===id);return `<li><small>${q.sec} · ${q.type}</small> ${esc((q.q||'[image question]').slice(0,100))}</li>`}).join('')}</ol></details>
+   <p><button class=bl onclick=startPicked()>Start this test</button> <button onclick="AIP=null;$('#aib').innerHTML=''">Discard</button></p></div>`;
+ }catch(e){out.innerHTML='<p style="color:#c62828">'+esc(String(e.message||e))+'</p>'}
+}
+function startPicked(){
+ if(!AIP)return;
+ const pick=AIP.ids.map(id=>Q.find(q=>q.id===id)).filter(Boolean);
+ if(!pick.length)return alert('Those questions are no longer in the bank.');
+ const t=$('#tmr');if(t){cfg.timer=t.checked;SV('catcfg',cfg)}
+ const sel={},mins={...cfg.mins};
+ SECS.forEach(s=>{const l=pick.filter(q=>q.sec==s);if(l.length)sel[s]=l});
+ const tot=Math.max(1,AIP.mins||Math.round(pick.length*40/24));
+ Object.keys(sel).forEach(s=>mins[s]=Math.max(0.5,tot*sel[s].length/pick.length));
+ const secs=SECS.filter(s=>sel[s]);
+ T={mode:'custom',secs,sel,si:0,st:{},mins,timer:cfg.timer,start:Date.now()};
+ secs.forEach(s=>sel[s].forEach(q=>T.st[q.id]={v:0,a:null,m:0,t:0}));
+ AIP=null;beginSec();
+}
+
 route();
 </script></body></html>
